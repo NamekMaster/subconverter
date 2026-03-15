@@ -10,6 +10,7 @@
 #include "utils/string_hash.h"
 #include "utils/stl_extra.h"
 #include "utils/urlencode.h"
+#include "utils/internal_header.h"
 #include "webserver.h"
 
 static const char *request_header_blacklist[] = {"host", "accept", "accept-encoding"};
@@ -146,7 +147,7 @@ int WebServer::start_web_server_multi(listener_args *args)
         writeLog(0, "handle_cmd:    " + req.method + " handle_uri:    " + req.target, LOG_LEVEL_VERBOSE);
         writeLog(0, "handle_header: " + dump(req.headers), LOG_LEVEL_VERBOSE);
 
-        if (req.has_header("SubConverter-Request"))
+        if (req.has_header(internal_request_header))
         {
             res.status = 500;
             res.set_content("Loop request detected!", "text/plain");

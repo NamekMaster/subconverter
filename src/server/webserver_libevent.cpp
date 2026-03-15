@@ -19,6 +19,7 @@
 #include "utils/stl_extra.h"
 #include "utils/string.h"
 #include "utils/urlencode.h"
+#include "utils/internal_header.h"
 #include "socket.h"
 #include "webserver.h"
 
@@ -192,7 +193,7 @@ static void on_request(evhttp_request *req, void *args)
     auto server = (WebServer*) args;
     static std::string auth_token = "Basic " + base64Encode(server->auth_user + ":" + server->auth_password);
     const char *req_content_type = evhttp_find_header(req->input_headers, "Content-Type"), *req_ac_method = evhttp_find_header(req->input_headers, "Access-Control-Request-Method");
-    const char *uri = req->uri, *internal_flag = evhttp_find_header(req->input_headers, "SubConverter-Request");
+    const char *uri = req->uri, *internal_flag = evhttp_find_header(req->input_headers, internal_request_header.c_str());
 
     char *client_ip;
     u_short client_port;
